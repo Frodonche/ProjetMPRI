@@ -20,15 +20,12 @@ for im = 1:numel(img_db_list);
     label_db{im} = get_label(img_db_list{im});
     clf;imshow(img_db{im});
     disp(label_db{im}); 
-    
+    drawnow();
 
     [x, y] = find(img_db{im});
     mX = mean(x);
     mY = mean(y);
     
-    hold on;
-    plot(mY, mX, 'r+', 'MarkerSize', 25)
-    
-    drawnow();
+    plot(
 end
 
