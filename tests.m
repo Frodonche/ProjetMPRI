@@ -13,7 +13,7 @@ totalX = 0;
 totalY = 0;
 
 
-for im = 1:1;%numel(img_db_list);
+for im = 1:2;%numel(img_db_list);
     %totalX = 0;
     %totalY = 0;
     img_db{im} = logical(imread(img_db_list{im}));
@@ -28,13 +28,15 @@ for im = 1:1;%numel(img_db_list);
     [x, y] = find(img_db{im});
     mX = round(mean(x));
     mY = round(mean(y));
+    coupe=180;
     
-    coupe=360;
+    signatures = zeros(numel(img_db_list),coupe);
+
     for co = 1:coupe;
-       teta = (co*pi)/180
+       teta = (co*pi)/180;
        trouveB = 0;
-       monX = cos(co * 2 * pi()/coupe)
-       monY = sin(co * 2 * pi()/coupe)
+       monX = cos(co * 2 * pi()/coupe);
+       monY = sin(co * 2 * pi()/coupe);
        toastX = mX;
        toastY = mY;
        hold on;
@@ -44,20 +46,24 @@ for im = 1:1;%numel(img_db_list);
        
        while (bool==1 & img_db{im}(round(toastX), round(toastY)) == 1);
             %coucou = img_db{im}(round(toastX), round(toastY))
-            
-            toastX = toastX + monX
-            toastY = toastY + monY
-            if (round(toastX) == size(img_db{im}) | round(toastX) == 0| round(toastY) == 0 | round(toastY) == size(img_db{im})); % tests si ça recontre des bords
+            [m,n] = size(img_db{im});
+            toastX = toastX + monX;
+            toastY = toastY + monY;
+            if (round(toastX) == m || round(toastX) == 0 || round(toastY) == 0 || round(toastY) == n); % tests si ça recontre des bords
                 bool = 0;
             end
             hold on;
             plot(toastY, toastX, 'r+', 'MarkerSize', 3);
+            distance = sqrt((mX - round(toastX))^2  + (mY - round(toastY))^2);
+            signatures(im , co) = distance;
        end
-       
+       signatures(im,:)
        hold on;
        plot(toastY, toastX, 'r.');
     end
     
+    X = fft(signatures);
+    X = abs(X)./X(im,0)
     %hold on;
     %plot(mY, mX, 'r+', 'MarkerSize', 25);
     
