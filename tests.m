@@ -17,12 +17,12 @@ for im = 1:1;%numel(img_db_list);
     %totalX = 0;
     %totalY = 0;
     img_db{im} = logical(imread(img_db_list{im}));
-    %label_db{im} = get_label(img_db_list{im});
-    %clf;
+    label_db{im} = get_label(img_db_list{im});
+    clf;
     figure(1);
     hold on;
     imshow(img_db{im});
-    %disp(label_db{im}); 
+    disp(label_db{im}); 
     
 
     [x, y] = find(img_db{im});
@@ -38,8 +38,8 @@ for im = 1:1;%numel(img_db_list);
        toastX = mX;
        toastY = mY;
        hold on;
-    plot(mY, mX, 'ro');
-        bool=1;
+       plot(mY, mX, 'ro');
+       bool=1;
        %&& toastX < size(img_db{im}, 2) && toastY < size(img_db{im}, 1)
        
        while (bool==1 & img_db{im}(round(toastX), round(toastY)) == 1);
@@ -47,14 +47,14 @@ for im = 1:1;%numel(img_db_list);
             
             toastX = toastX + monX
             toastY = toastY + monY
-            if (|||); % tests si ça recontre des bords
+            if (round(toastX) == size(img_db{im}) | round(toastX) == 0| round(toastY) == 0 | round(toastY) == size(img_db{im})); % tests si ça recontre des bords
                 bool = 0;
             end
-            %hold on;
-            %plot(toastY, toastX, 'r+', 'MarkerSize', 3);
+            hold on;
+            plot(toastY, toastX, 'r+', 'MarkerSize', 3);
        end
        
-       %hold on;
+       hold on;
        plot(toastY, toastX, 'r.');
     end
     
